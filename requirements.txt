@@ -1,0 +1,2 @@
+# Minimal dependency for downloading the Kaggle competition data
+kagglehub
