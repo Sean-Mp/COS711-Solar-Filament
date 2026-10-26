@@ -23,3 +23,10 @@ The data is extracted to `/content/data` in the Colab runtime. It is not saved i
 - `.gitignore` — excludes local data, archives, environment files, and notebook checkpoints from Git.
 
 No Python virtual environment is needed when running the notebook in Colab. If you later run the project locally, you can install the dependencies from `requirements.txt` in your preferred environment. Note that the Drive mount and unzip steps are Colab-specific, so locally you would need to point the data path at your own copy of the dataset.
+
+### Preprocessing:
+1. Parse and group
+2. Split by observation.
+3. Downsampling
+4. Image normalisation
+5. Build targets
