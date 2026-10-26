@@ -27,6 +27,6 @@ No Python virtual environment is needed when running the notebook in Colab. If y
 ### Preprocessing:
 1. Parse and group
 2. Split by observation.
-3. Build targets per annotated image
+3. Downsampling
 4. Image normalisation
-5. Downsample resolution 
+5. Build targets
