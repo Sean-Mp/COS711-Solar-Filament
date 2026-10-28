@@ -11,5 +11,8 @@ Open [`notebooks/01_data_preprocessing.ipynb`](notebooks/01_data_preprocessing.i
 ## Files
 
 - `notebooks/01_data_preprocessing.ipynb` — data setup, preprocessing, target generation, and PyTorch dataset setup.
+- `notebooks/02_experimental_setup.ipynb` — U-Net training, staged hyperparameter search, validation PQ, post-processing tuning, cost benchmarks and test-set predictions. It reruns notebook 01 itself, then logs every run to `runs/` on the shared drive.
+- `src/` — model (`unet.py`), multi-task loss (`losses.py`), training loop (`train.py`), inference and evaluation (`evaluate.py`).
+- `docs/methodology.md` — slide content and speaker notes for the Experimental Setup and Methodology section.
 - `requirements.txt` — dependencies for optional local use; the notebook installs its additional preprocessing packages in Colab.
 - `.gitignore` — excludes local data, archives, environment files, and notebook checkpoints.
