@@ -12,10 +12,11 @@ Aim for about 2 minutes of speaking: 5 slides, roughly 25 seconds each.
 
 - **Python 3, PyTorch 2** (mixed precision, AdamW), **segmentation-models-pytorch** for the pretrained encoder
 - **OpenCV / pycocotools / scikit-image** for preprocessing and connected components
-- **Google Colab, NVIDIA T4 (16 GB)**. Every run logs its config, history, checkpoint and scores to the shared Drive and resumes after a disconnect
+- **Kaggle Notebooks, NVIDIA T4 / P100 (16 GB)**, about 30 free GPU-hours a week, with the competition data attached directly. Notebooks 01 and 02 also run on Google Colab.
+- Every run checkpoints each epoch and resumes in the next session. Training stops starting new epochs before Kaggle's 12-hour session limit, and each saved version's runs feed into the next.
 - **GitHub** for code, with one notebook per pipeline stage (01 data → 02 training/evaluation → enhancement)
 
-> *Notes:* "Everything runs on a free Colab T4. Because sessions drop, every run checkpoints each epoch to Drive and picks up where it left off, and all results go into one table that the rest of the team reads."
+> *Notes:* "We trained on Kaggle's free GPUs, because Colab's free quota ran out after a few hours. Sessions end after 12 hours, so every run checkpoints each epoch and picks up where it left off in the next session, and all results go into one table that the rest of the team reads."
 
 ---
 

@@ -27,11 +27,13 @@ def warmup_cosine(total_steps, warmup_steps, min_lr_frac=0.01):
     return f
 
 
-def fit(model, train_dl, loss_fn, cfg, run_dir, val_fn=None, log=print):
+def fit(model, train_dl, loss_fn, cfg, run_dir, val_fn=None, log=print, deadline=None):
     """Train for cfg["epochs"] epochs, resuming from run_dir/last.pt if it exists.
 
     val_fn(model) -> dict with at least "PQ"; it runs every cfg["val_every"] epochs and on the
-    last epoch, and the best-PQ weights are saved to run_dir/best.pt. Returns the history table.
+    last epoch, and the best-PQ weights are saved to run_dir/best.pt. No new epoch starts after
+    `deadline` (a time.time() value), so a session limit stops training cleanly at an epoch
+    boundary. Returns the history table, which is shorter than cfg["epochs"] if it stopped early.
     """
     run_dir = Path(run_dir)
     run_dir.mkdir(parents=True, exist_ok=True)
@@ -54,6 +56,9 @@ def fit(model, train_dl, loss_fn, cfg, run_dir, val_fn=None, log=print):
         log(f"resumed after epoch {start}")
 
     for epoch in range(start, cfg["epochs"]):
+        if deadline is not None and time.time() > deadline:
+            log(f"time budget reached after epoch {epoch}; rerun to resume from {ckpt}")
+            break
         model.train()
         t0, sums = time.time(), {}
         for batch in train_dl:
