@@ -73,8 +73,8 @@ Aim for about 2 minutes of speaking: 5 slides, roughly 25 seconds each.
 | B1 | lr 1e-4 / 3e-4 / 1e-3 | 2 × 20 ep (+ A3) | 0.327 / **0.330** / 0.324 | lr 3e-4 |
 | B2 | soft consensus labels (α = 0.5); 768 crops (batch 4) | 2 × 20 ep | 0.341; **0.358** | 768 crops |
 | C | ResNet-34, 5 outputs, lr 3e-4, 768 crops, 50 epochs, **3 seeds** | 3 × 50 ep | **0.380 ± 0.008** | (vs D) |
-| D1–D3 | aimed at Stage C's errors: soft labels + 768 crops; 1024 crops (batch 2); 50% filament-centred crops | 3 × 20 ep | *pending Kaggle run* | |
-| D | winner of B2/D1–D3, **80 epochs**, 3 seeds | 3 × 80 ep | *pending* | final model if better than C |
+| D1–D3 | aimed at Stage C's errors: soft labels + 768 crops; 1024 crops (batch 2); 50% filament-centred crops | 3 × 20 ep | **0.370**; **0.370**; 0.362 (B2 retrained: 0.353) | D1: ties D2 at half the training time |
+| D | D1's setup (soft labels + 768 crops), 50 epochs, 3 seeds | 3 × 50 ep | *pending* | final model if better than C |
 | post | fg threshold {0.3–0.7} × min area {0–200 px}, best seed | grid of 25 | 0.388 → **0.405** (thr 0.4, min area 200) | |
 
 Charts: `docs/figures/stage_comparison.png` (this table as a bar chart), `val_pq_curves.png` (Stage A plus 768 crops), and `final_seeds.png` (the three final seeds).
@@ -86,7 +86,7 @@ What the search showed:
 - **Main error:** false positives (about 850 vs 855 true positives) and fragmentation (about 127 filaments split in two or more, vs 27 merges), so RQ (0.57) is much lower than SQ (0.65). Removing blobs under 200 px gives +0.017, which suggests many false positives are small fragments.
 
 - Each stage builds on the previous winner (greedy search), which kept Stages A–C to 10 runs, about 6 hours of training and validation on a Kaggle T4
-- **Stage D** follows from analysing Stage C's errors, using training-side changes only (post-processing belongs to the Enhancement section). It combines soft labels with 768 crops, tries 1024 crops, and shows the network more filament-free crops to cut false positives. The winner is trained for 80 epochs, since Stage C was still improving at epoch 50. The final model is whichever of C and D scores higher, under the same fixed post-processing.
+- **Stage D** follows from analysing Stage C's errors, using training-side changes only (post-processing belongs to the Enhancement section). It combines soft labels with 768 crops, tries 1024 crops, and shows the network more filament-free crops to cut false positives. Soft labels + 768 crops and 1024 crops tied (0.3695 vs 0.3698), so we kept the one that trains in half the time. 50% filament-centred crops did not reduce false positives and missed more filaments, so it was dropped. D_final trains for 50 epochs like C: Stage C gained only about 0.01 PQ between epochs 25 and 50, which is near the seed noise, so we did not train for longer. The final model is whichever of C and D scores higher, under the same fixed post-processing.
 - Caveat to say aloud: the post-processing is tuned on the same validation set, so 0.405 is optimistic. The **Kaggle leaderboard** is the unbiased check.
 
 > *Notes:* "We tuned greedily on a limited GPU budget. The three final seeds vary by about 0.008 PQ, which tells us which differences are real. Predicting the extra outputs, larger crops and longer training clearly helped. The learning rate barely mattered, and the pretrained encoder matched the scratch U-Net but trained one and a half times faster. The final model scores 0.380 ± 0.008 validation PQ, or 0.405 after tuning post-processing, and its main weakness is false positives and fragmented filaments, which is what our enhancement section tackles."
