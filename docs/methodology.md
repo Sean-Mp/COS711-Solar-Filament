@@ -1,8 +1,9 @@
 # Experimental Setup and Methodology (presentation section 2, 20 marks)
 
 Slide content and speaker notes for the methodology part of the video. The code is in
-`notebooks/02_experimental_setup.ipynb` and `src/`. Numbers marked **[fill in]** come from
-`runs/results.csv` on the shared drive once the experiments have run.
+`notebooks/02_experimental_setup.ipynb` and `src/`. The numbers come from the Kaggle runs in
+`results/runs/` (Tesla T4), and the slide charts are in `docs/figures/` (regenerate them with
+`python docs/make_figures.py`).
 
 Aim for about 2 minutes of speaking: 5 slides, roughly 25 seconds each.
 
@@ -57,7 +58,7 @@ Aim for about 2 minutes of speaking: 5 slides, roughly 25 seconds each.
 - Validation runs on the **full disk** (no crops). The prediction is scored against **every annotator's set**, averaged over sets, then over observations
 - Metrics: **PQ** (mean ± std over observations, and pooled over all sets), SQ, RQ, pixel Dice, and **one-to-many / many-to-one** counts (fragmentation and merging)
 - **Model selection on validation PQ** every 5 epochs, not on loss
-- Cost reported: parameters, size, training minutes, and **end-to-end** seconds per image (raw JPEG → disk fit → network → instance map)
+- **Cost of the final model** (Tesla T4): 24.4 M parameters, 93 MB fp32 / 47 MB fp16, **61 min** to train (50 epochs, 74 s per epoch), **0.40 s per image** end to end (raw JPEG → disk fit → network → instance map)
 
 > *Notes:* "We select checkpoints on PQ itself because the loss does not penalise merges or splits. Scoring against every annotator and then averaging per observation means observations with three annotators don't count three times."
 
@@ -65,24 +66,40 @@ Aim for about 2 minutes of speaking: 5 slides, roughly 25 seconds each.
 
 ## Slide 5: Tuning: staged search
 
-| Stage | What is tested | Runs | Result (val PQ) |
-|---|---|---|---|
-| A1 / A2 | fg-only vs multi-task outputs (U-Net from scratch) | 2 × 20 ep | [fill in] / [fill in] |
-| A3 | ImageNet ResNet-34 encoder (multi-task) | 20 ep | [fill in] |
-| B1 | learning rate {1e-4, 3e-4, 1e-3} on the A winner | 2–3 × 20 ep | [fill in] |
-| B2 | soft consensus labels (α = 0.5); 768 crops | 2 × 20 ep | [fill in] |
-| C | best config, 50 epochs, **3 seeds** | 3 × 50 ep | **[mean ± std]** |
-| post | fg threshold {0.3–0.7} × min area {0–200 px}, grid search on cached outputs | — | [fill in] |
+| Stage | What is tested | Runs | Val PQ | Kept |
+|---|---|---|---|---|
+| A1 → A2 | fg only → all 5 outputs (U-Net from scratch) | 2 × 20 ep | 0.287 → **0.325** | 5 outputs |
+| A3 | ImageNet ResNet-34 encoder, lr 3e-4 | 20 ep | **0.330** | ResNet-34 |
+| B1 | lr 1e-4 / 3e-4 / 1e-3 | 2 × 20 ep (+ A3) | 0.327 / **0.330** / 0.324 | lr 3e-4 |
+| B2 | soft consensus labels (α = 0.5); 768 crops (batch 4) | 2 × 20 ep | 0.341; **0.358** | 768 crops |
+| C | ResNet-34, 5 outputs, lr 3e-4, 768 crops, 50 epochs, **3 seeds** | 3 × 50 ep | **0.380 ± 0.008** | (vs D) |
+| D1–D3 | aimed at Stage C's errors: soft labels + 768 crops; 1024 crops (batch 2); 50% filament-centred crops | 3 × 20 ep | *pending Kaggle run* | |
+| D | winner of B2/D1–D3, **80 epochs**, 3 seeds | 3 × 80 ep | *pending* | final model if better than C |
+| post | fg threshold {0.3–0.7} × min area {0–200 px}, best seed | grid of 25 | 0.388 → **0.405** (thr 0.4, min area 200) | |
 
-- Each stage builds on the previous winner (greedy search), which keeps the GPU budget to roughly 10 runs
-- Plot for the slide: `plot_history("A1_unet_fg", "A2_unet_mt", "A3_r34_mt")` (training loss and validation PQ curves)
-- Caveat to say aloud: the threshold is tuned on the same validation set, so that number is optimistic. The **Kaggle leaderboard** is the unbiased check.
+Charts: `docs/figures/stage_comparison.png` (this table as a bar chart), `val_pq_curves.png` (Stage A plus 768 crops), and `final_seeds.png` (the three final seeds).
 
-> *Notes:* "With a limited GPU budget we tuned greedily: architecture and formulation first, then learning rate, then label handling and crop size, and finally three seeds of the winner to report a mean and standard deviation."
+What the search showed:
+- **Noise level:** the three final seeds differ by ±0.008 PQ, so single-run differences smaller than about 0.01 are not meaningful. That covers the learning rate (all three within 0.006) and pretrained vs scratch (+0.005).
+- **Clear gains:** the auxiliary outputs (+0.038; false positives 1614 → 1326 and fragmented filaments 216 → 189), 768 crops (+0.028; false positives 1347 → 966), and 50 epochs instead of 20 (+0.022). Soft labels gave +0.011, a borderline result.
+- **ResNet-34 kept for speed:** the pretrained encoder scored about the same as the scratch U-Net but trained about 1.5× faster (33 s vs 50 s per epoch).
+- **Main error:** false positives (about 850 vs 855 true positives) and fragmentation (about 127 filaments split in two or more, vs 27 merges), so RQ (0.57) is much lower than SQ (0.65). Removing blobs under 200 px gives +0.017, which suggests many false positives are small fragments.
+
+- Each stage builds on the previous winner (greedy search), which kept Stages A–C to 10 runs, about 6 hours of training and validation on a Kaggle T4
+- **Stage D** follows from analysing Stage C's errors, using training-side changes only (post-processing belongs to the Enhancement section). It combines soft labels with 768 crops, tries 1024 crops, and shows the network more filament-free crops to cut false positives. The winner is trained for 80 epochs, since Stage C was still improving at epoch 50. The final model is whichever of C and D scores higher, under the same fixed post-processing.
+- Caveat to say aloud: the post-processing is tuned on the same validation set, so 0.405 is optimistic. The **Kaggle leaderboard** is the unbiased check.
+
+> *Notes:* "We tuned greedily on a limited GPU budget. The three final seeds vary by about 0.008 PQ, which tells us which differences are real. Predicting the extra outputs, larger crops and longer training clearly helped. The learning rate barely mattered, and the pretrained encoder matched the scratch U-Net but trained one and a half times faster. The final model scores 0.380 ± 0.008 validation PQ, or 0.405 after tuning post-processing, and its main weakness is false positives and fragmented filaments, which is what our enhancement section tackles."
 
 ---
 
 ## Hand-offs
 
-- **Results (section 3):** `runs/results.csv` (one row per run), `runs/<run>/val_per_set.csv` (per-image PQ, for best and worst cases), `runs/<run>/history.csv`, and `runs/C_final_s*/test_pred/*.npz` (test instance maps, to encode into `submission.csv`)
+- **Results (section 3):** `results/runs/results.csv` (one row per run), `results/runs/<run>/val_per_set.csv` (per-image PQ, for best and worst cases), `history.csv`, and `results/runs/C_final_s1/test_pred/*.npz` (180 test instance maps, to encode into `submission.csv`).
+  - Best validation observations (seed 1): `20210721123430_Ch` (PQ 0.74), `20110313082654_Uh` (0.68).
+  - Worst: `20220418020950_Uh` and `20200105073250_Uh` (PQ 0; one or two filaments missed), and `20140818195814_Mh` (0.10; 10 false positives).
+  - By instrument, PQ ranges from 0.36 (Mh, Bh) to 0.43 (Ch).
+  - Annotators disagree: on the 39 validation observations with several annotation sets, the same prediction's PQ differs by 0.14 on average between annotators. That puts a ceiling on achievable PQ and is worth mentioning.
 - **Enhancement (section 4):** `src.evaluate.collect_probs` caches all five output maps for the validation set. Pass your own `postproc(probs, disk, **kw) -> instance map` to `grid_search` / `score_collected` to compare against the connected-components baseline under the same protocol. For compression, `model_size` and `benchmark` give the before/after numbers.
+  - Start from the errors: false positives and fragmentation, not merges.
+  - The best minimum area (200 px) was at the edge of the grid, so try larger values too.

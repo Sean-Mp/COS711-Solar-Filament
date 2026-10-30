@@ -1,0 +1,23 @@
+{
+ "name": "A3_r34_mt",
+ "seed": 0,
+ "overrides": "{\"model\": \"smp_unet\", \"lr\": 0.0003}",
+ "params_M": 24.430677,
+ "size_MB_fp32": 93.26850509643555,
+ "size_MB_fp16": 46.63425254821777,
+ "epochs": 20,
+ "best_epoch": 20,
+ "train_min": 11.519083551565807,
+ "wall_min": 15.236354959011077,
+ "val_PQ": 0.3302865505110451,
+ "val_PQ_std": 0.1383363833345283,
+ "val_SQ": 0.6451793931051084,
+ "val_RQ": 0.49399682337145756,
+ "val_dice": 0.65124497466856,
+ "val_PQ_pooled": 0.3362599846547333,
+ "val_TP": 884,
+ "val_FP": 1347,
+ "val_FN": 393,
+ "val_one_to_many": 175,
+ "val_many_to_one": 18
+}

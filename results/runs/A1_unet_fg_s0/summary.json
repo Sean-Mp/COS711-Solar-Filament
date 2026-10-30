@@ -1,0 +1,23 @@
+{
+ "name": "A1_unet_fg",
+ "seed": 0,
+ "overrides": "{\"loss_weights\": {\"fg\": 1.0}}",
+ "params_M": 20.612261,
+ "size_MB_fp32": 78.66779708862305,
+ "size_MB_fp16": 39.33389854431152,
+ "epochs": 20,
+ "best_epoch": 20,
+ "train_min": 16.975599523385366,
+ "wall_min": 23.044625012079873,
+ "val_PQ": 0.28695391716664936,
+ "val_PQ_std": 0.12754131025804133,
+ "val_SQ": 0.6382654095111534,
+ "val_RQ": 0.43549791982778474,
+ "val_dice": 0.6290696821548103,
+ "val_PQ_pooled": 0.2908323751373587,
+ "val_TP": 818,
+ "val_FP": 1614,
+ "val_FN": 459,
+ "val_one_to_many": 216,
+ "val_many_to_one": 26
+}

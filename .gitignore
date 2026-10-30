@@ -3,3 +3,10 @@
 __pycache__/
 .ipynb_checkpoints/
 .env
+
+# Kaggle run outputs: checkpoints and archives are too large for git
+*.pt
+results.zip
+*:Zone.Identifier
+results/__results___files/
+results/__huggingface_repos__.json
