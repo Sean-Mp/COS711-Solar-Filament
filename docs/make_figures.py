@@ -54,32 +54,51 @@ labels = {
 rounds = {1: res, 2: res2}
 c_all = pd.concat([r[r.name == "C_final"].val_PQ for r in rounds.values()])
 
-fig, ax = plt.subplots(figsize=(10, 6.9))
-ax.axvspan(c_all.mean() - c_all.std(), c_all.mean() + c_all.std(), color=BAR, alpha=0.35, lw=0,
-           label=f"C_final mean ± sd ({len(c_all)} runs)")
-y = list(range(len(labels)))[::-1]
-for yi, name in zip(y, labels):
-    vals = []
-    for (rnd, r), c, off in zip(rounds.items(), SERIES, (0.12, -0.12)):
-        v = r[r.name == name].val_PQ
-        vals += v.tolist()
-        ax.scatter(v, [yi + off] * len(v), s=46, color=c, edgecolor=SURFACE, linewidth=1.5, zorder=3,
-                   label=f"round {rnd}" if yi == y[0] else None)
-    mean = sum(vals) / len(vals)
-    ax.plot([mean, mean], [yi - 0.3, yi + 0.3], color=INK, lw=2, zorder=4)
-    ax.text(0.405, yi, f"{mean:.3f}" + (f"  (n={len(vals)})" if len(vals) != 2 else ""),
-            va="center", color=INK, fontsize=10)
-ax.set_yticks(y, list(labels.values()))
-ax.set_xlim(0.28, 0.43)
-ax.set_xlabel("Validation PQ (107 observations, all annotation sets)")
-ax.grid(axis="y", visible=False)
-ax.set_axisbelow(True)
-ax.legend(loc="upper left", bbox_to_anchor=(0, -0.11), ncol=3, fontsize=10)
-ax.set_title("Validation PQ of every run; black tick = mean", loc="left")
-fig.text(0.01, 0.01, "Each experiment ran once per round (D-stage runs: round 2 only). "
-         "The same configuration varies by about ±0.007 between runs.", color=INK2, fontsize=10)
-fig.tight_layout(rect=(0, 0.03, 1, 1))
-fig.savefig(OUT / "stage_comparison.png", dpi=200, bbox_inches="tight")
+
+def dot_plot(path, figsize, colors, markers, band, fontsize, surface, title=None, footnote=None, short=False,
+             band_label="C_final mean ± sd"):
+    "Every run of both rounds as a dot (one colour and marker per round), a tick at the mean."
+    with plt.rc_context({"font.size": fontsize, "figure.facecolor": surface, "axes.facecolor": surface,
+                         "savefig.facecolor": surface}):
+        fig, ax = plt.subplots(figsize=figsize)
+        ax.axvspan(c_all.mean() - c_all.std(), c_all.mean() + c_all.std(), color=band, alpha=0.35, lw=0,
+                   label=f"{band_label} ({len(c_all)} runs)")
+        y = list(range(len(labels)))[::-1]
+        for yi, name in zip(y, labels):
+            vals = []
+            for (rnd, r), c, mk, off in zip(rounds.items(), colors, markers, (0.12, -0.12)):
+                v = r[r.name == name].val_PQ
+                vals += v.tolist()
+                ax.scatter(v, [yi + off] * len(v), s=fontsize * 4, marker=mk, color=c, edgecolor=surface,
+                           linewidth=1.2, zorder=3, label=f"round {rnd}" if yi == y[0] else None)
+            mean = sum(vals) / len(vals)
+            ax.plot([mean, mean], [yi - 0.3, yi + 0.3], color=INK, lw=2, zorder=4)
+            ax.text(0.405, yi, f"{mean:.3f}" + (f" (n={len(vals)})" if len(vals) != 2 else ""),
+                    va="center", color=INK, fontsize=fontsize - 2)
+        names = [v.split("  ", 1)[1] if short else v for v in labels.values()]
+        ax.set_yticks(y, names)
+        ax.set_xlim(0.28, 0.43)
+        ax.set_xlabel("Validation PQ")
+        ax.grid(axis="y", visible=False)
+        ax.set_axisbelow(True)
+        ax.legend(loc="upper left", bbox_to_anchor=(0, -0.13), ncol=3, fontsize=fontsize - 2,
+                  handletextpad=0.3, columnspacing=1.2)
+        if title:
+            ax.set_title(title, loc="left")
+        if footnote:
+            fig.text(0.01, 0.01, footnote, color=INK2, fontsize=fontsize - 2)
+        fig.tight_layout(rect=(0, 0.03 if footnote else 0, 1, 1))
+        fig.savefig(path, dpi=200, bbox_inches="tight")
+        plt.close(fig)
+
+
+# Report version (palette slots 1-2) and slide version (the deck's UP blue and gold, larger text)
+dot_plot(OUT / "stage_comparison.png", (10, 6.9), SERIES[:2], ("o", "D"), BAR, 12, SURFACE,
+         title="Validation PQ of every run; black tick = mean",
+         footnote="Each experiment ran once per round (D-stage runs: round 2 only). "
+                  "The same configuration varies by about ±0.007 between runs.")
+dot_plot(OUT / "stage_comparison_slide.png", (7.6, 5.3), ("#005BAA", "#C48B3B"), ("o", "D"), "#9DC3E6", 13,
+         "#FFFFFF", short=True, band_label="final model, mean ± sd")
 
 # 2. Validation PQ during training: architecture/formulation runs and the crop-size winner
 curves = [("A1_unet_fg_s0", "A1 U-Net, fg only"), ("A2_unet_mt_s0", "A2 U-Net, 5 outputs"),
