@@ -1,0 +1,8 @@
+{
+ "params_M": 24.430677,
+ "size_MB_fp32": 93.26850509643555,
+ "size_MB_fp16": 46.63425254821777,
+ "train_min_per_run": 61.461000000000006,
+ "infer_s_per_image": 0.39911331860002974,
+ "device": "Tesla T4"
+}

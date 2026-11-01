@@ -1,0 +1,39 @@
+{
+ "seed": 1,
+ "model": "smp_unet",
+ "base_ch": 32,
+ "depth": 6,
+ "encoder": "resnet34",
+ "encoder_weights": "imagenet",
+ "in_mean": 0.5,
+ "in_std": 0.3,
+ "crop": 768,
+ "batch_size": 4,
+ "pos_prob": 0.8,
+ "num_workers": 4,
+ "loss_weights": {
+  "fg": 1.0,
+  "boundary": 0.5,
+  "contact": 0.25,
+  "dist": 0.5,
+  "spine": 0.5
+ },
+ "pos_weight": {
+  "boundary": 3.0,
+  "contact": 10.0,
+  "spine": 3.0
+ },
+ "dice": true,
+ "soft_label_alpha": 0.0,
+ "epochs": 50,
+ "lr": 0.0003,
+ "weight_decay": 0.0001,
+ "warmup_epochs": 1,
+ "grad_clip": 1.0,
+ "amp": true,
+ "val_every": 5,
+ "pp": {
+  "thr": 0.5,
+  "min_area": 50
+ }
+}

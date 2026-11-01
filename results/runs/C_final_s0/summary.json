@@ -1,0 +1,23 @@
+{
+ "name": "C_final",
+ "seed": 0,
+ "overrides": "{\"model\": \"smp_unet\", \"lr\": 0.0003, \"crop\": 768, \"batch_size\": 4, \"epochs\": 50, \"seed\": 0}",
+ "params_M": 24.430677,
+ "size_MB_fp32": 93.26850509643555,
+ "size_MB_fp16": 46.63425254821777,
+ "epochs": 50,
+ "best_epoch": 50,
+ "train_min": 61.471055555343625,
+ "wall_min": 71.8630063811938,
+ "val_PQ": 0.37606941444793435,
+ "val_PQ_std": 0.14499234961673188,
+ "val_SQ": 0.6495782632883644,
+ "val_RQ": 0.5614571895779236,
+ "val_dice": 0.6712717654562464,
+ "val_PQ_pooled": 0.37588115468492633,
+ "val_TP": 857,
+ "val_FP": 911,
+ "val_FN": 420,
+ "val_one_to_many": 132,
+ "val_many_to_one": 27
+}

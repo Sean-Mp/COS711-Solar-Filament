@@ -1,0 +1,23 @@
+{
+ "name": "B2_crop768",
+ "seed": 0,
+ "overrides": "{\"model\": \"smp_unet\", \"lr\": 0.0003, \"crop\": 768, \"batch_size\": 4}",
+ "params_M": 24.430677,
+ "size_MB_fp32": 93.26850509643555,
+ "size_MB_fp16": 46.63425254821777,
+ "epochs": 20,
+ "best_epoch": 15,
+ "train_min": 25.125504930814106,
+ "wall_min": 29.28688975572586,
+ "val_PQ": 0.3577751446699144,
+ "val_PQ_std": 0.14184532164598437,
+ "val_SQ": 0.6440629094282309,
+ "val_RQ": 0.539302054887319,
+ "val_dice": 0.6532266976640355,
+ "val_PQ_pooled": 0.3582753341651053,
+ "val_TP": 830,
+ "val_FP": 966,
+ "val_FN": 447,
+ "val_one_to_many": 129,
+ "val_many_to_one": 30
+}
