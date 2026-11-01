@@ -10,3 +10,6 @@ results.zip
 *:Zone.Identifier
 results/__results___files/
 results/__huggingface_repos__.json
+
+# PowerPoint lock files
+~$*
