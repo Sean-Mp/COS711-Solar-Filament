@@ -1,2 +1,15 @@
-# Minimal dependency for downloading the Kaggle competition data
+# The notebooks install what they need on Kaggle/Colab; these are for running the code locally.
 kagglehub
+torch
+torchvision
+segmentation-models-pytorch
+torch-pruning
+pycocotools
+opencv-python-headless
+scikit-image
+scikit-learn
+scipy
+joblib
+numpy
+pandas
+matplotlib

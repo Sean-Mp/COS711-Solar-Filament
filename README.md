@@ -14,8 +14,14 @@ Open [`notebooks/01_data_preprocessing.ipynb`](notebooks/01_data_preprocessing.i
 
 - `notebooks/01_data_preprocessing.ipynb` — data setup, preprocessing, target generation, and PyTorch dataset setup.
 - `notebooks/02_experimental_setup.ipynb` — U-Net training, staged hyperparameter search, validation PQ, post-processing tuning, cost benchmarks and test-set predictions. It reruns notebook 01 itself, then logs every run to `runs/` (the team Drive folder on Colab, `/kaggle/working` on Kaggle).
-- `notebooks/03_segmentation_enhancement.ipynb` — Segmentation Enhancement: cross-fitted ablation of instance extraction from all five output maps (hysteresis, fragment joining, contact/distance splitting, rule-based and learned instance filtering), test-time augmentation and seed ensembling, compression (fp16/fp32, half resolution, unstructured and iterative structured pruning, knowledge distillation), choice of the final pipeline, test predictions and `submission.csv`. Results go to `enhancement/` (tables, figures, models).
+- `notebooks/03_segmentation_enhancement.ipynb` — Segmentation Enhancement: cross-fitted ablation of instance extraction from all five output maps (hysteresis, fragment joining, contact/distance splitting, rule-based and learned instance filtering), test-time augmentation and seed ensembling, compression (fp16/fp32, half resolution, unstructured and iterative structured pruning, knowledge distillation), choice of the final pipeline, test predictions and `submission.csv`. Results go to `enhancement/` (tables, figures, models); the outputs of our Kaggle run are in `results/enhancement/`. See `docs/kaggle_guide.md` to run it.
 - `src/` — model (`unet.py`), multi-task loss (`losses.py`), training loop (`train.py`), inference and evaluation (`evaluate.py`); for the enhancement section: instance extraction (`postprocess.py`), TTA/ensemble/reduced-resolution inference and probability caching (`inference.py`), cross-fitted evaluation, timing and figures (`enh_eval.py`), pruning and distillation (`compress.py`), submission writer (`submission.py`), and notebook 01's metrics as an importable module (`metrics.py`).
 - `docs/methodology.md` — slide content and speaker notes for the Experimental Setup and Methodology section.
 - `requirements.txt` — dependencies for optional local use; the notebooks install their additional packages (`segmentation-models-pytorch`, `torch-pruning`) themselves.
 - `.gitignore` — excludes local data, archives, environment files, and notebook checkpoints.
+
+## Submission files
+
+- `submissions/final submission/submission.csv` — the file selected on Kaggle (enhanced single-pass pipeline, public score 0.39).
+- `submissions/all submissions/` — every file we submitted to Kaggle, for comparison.
+- To rebuild a submission from saved test predictions: `python -m src.submission results/enhancement/test_pred/single_model__enhanced_post-processing submission.csv`.
