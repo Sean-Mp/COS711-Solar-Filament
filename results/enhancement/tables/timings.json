@@ -1,0 +1,182 @@
+{
+ "ResNet-34 U-Net, fp16 (nb 02)": {
+  "preprocess_s": 0.12225282655003866,
+  "network_s": 0.26016451784996664,
+  "postproc_s": 0.15035505835005553,
+  "total_s": 0.5327724027500608
+ },
+ "ResNet-34 U-Net, fp32": {
+  "preprocess_s": 0.10983907204997649,
+  "network_s": 0.3940486167999552,
+  "postproc_s": 0.14888935660010247,
+  "total_s": 0.6527770454500341
+ },
+ "ResNet-34 U-Net, half resolution": {
+  "preprocess_s": 0.11255181344997708,
+  "network_s": 0.16513859930003036,
+  "postproc_s": 0.14406730249993416,
+  "total_s": 0.4217577152499416
+ },
+ "unstructured 30% zeros": {
+  "preprocess_s": 0.10981955739998739,
+  "network_s": 0.2519874515499623,
+  "postproc_s": 0.151260092099983,
+  "total_s": 0.5130671010499327
+ },
+ "unstructured 50% zeros": {
+  "preprocess_s": 0.10351948219993119,
+  "network_s": 0.25181263170006785,
+  "postproc_s": 0.1471559195999589,
+  "total_s": 0.502488033499958
+ },
+ "unstructured 70% zeros": {
+  "preprocess_s": 0.10481831665001665,
+  "network_s": 0.2517973664999545,
+  "postproc_s": 0.1456065792000345,
+  "total_s": 0.5022222623500057
+ },
+ "unstructured 90% zeros": {
+  "preprocess_s": 0.10419583259999854,
+  "network_s": 0.2510314130500092,
+  "postproc_s": 0.13863687535001645,
+  "total_s": 0.4938641210000242
+ },
+ "structured 25% channels removed, before fine-tuning": {
+  "preprocess_s": 0.10366650314997514,
+  "network_s": 0.22197145835007176,
+  "postproc_s": 0.05121568864997243,
+  "total_s": 0.37685365015001937
+ },
+ "structured 25% channels removed + 8 ep fine-tune": {
+  "preprocess_s": 0.11770637714989789,
+  "network_s": 0.22553929960008645,
+  "postproc_s": 0.15051678135005203,
+  "total_s": 0.4937624581000364
+ },
+ "structured 50% channels removed, before fine-tuning": {
+  "preprocess_s": 0.10314467135003724,
+  "network_s": 0.18156281944989133,
+  "postproc_s": 0.0504649397500998,
+  "total_s": 0.3351724305500284
+ },
+ "structured 50% channels removed + 8 ep fine-tune": {
+  "preprocess_s": 0.12514875889996802,
+  "network_s": 0.18449290435014518,
+  "postproc_s": 0.15399595009985206,
+  "total_s": 0.4636376133499652
+ },
+ "resnet18 student, distilled from 3-seed ensemble": {
+  "preprocess_s": 0.11876166459987872,
+  "network_s": 0.23576065179995567,
+  "postproc_s": 0.1460481996499766,
+  "total_s": 0.500570516049811
+ },
+ "resnet18 student, annotations only (control)": {
+  "preprocess_s": 0.1278460505000112,
+  "network_s": 0.2438390360500307,
+  "postproc_s": 0.16899589939994258,
+  "total_s": 0.5406809859499845
+ },
+ "single model (nb 02 post-processing)": {
+  "preprocess_s": 0.13185406154971133,
+  "network_s": 0.2745588979001695,
+  "postproc_s": 0.07128808254992691,
+  "total_s": 0.4777010419998078
+ },
+ "single model + enhanced post-processing": {
+  "preprocess_s": 0.1178944256998875,
+  "network_s": 0.27442920575022073,
+  "postproc_s": 0.1714619554998535,
+  "total_s": 0.5637855869499617
+ },
+ "TTA x8 + enhanced": {
+  "preprocess_s": 0.11743427944993527,
+  "network_s": 1.4201408958999309,
+  "postproc_s": 0.16947725930003799,
+  "total_s": 1.707052434649904
+ },
+ "3-seed ensemble + enhanced": {
+  "preprocess_s": 0.11805143510009657,
+  "network_s": 0.5748653783998634,
+  "postproc_s": 0.17158317425009956,
+  "total_s": 0.8644999877500595
+ },
+ "ensemble + TTA x8 + enhanced": {
+  "preprocess_s": 0.11884169120012303,
+  "network_s": 3.9578236580498922,
+  "postproc_s": 0.17306034334988,
+  "total_s": 4.249725692599895
+ },
+ "structured25 + enhanced": {
+  "preprocess_s": 0.1179294333001053,
+  "network_s": 0.2376923229001477,
+  "postproc_s": 0.17135642639987053,
+  "total_s": 0.5269781826001235
+ },
+ "structured50 + enhanced": {
+  "preprocess_s": 0.11452333684983387,
+  "network_s": 0.19806839359998776,
+  "postproc_s": 0.16770042695015946,
+  "total_s": 0.4802921573999811
+ },
+ "student_kd + enhanced": {
+  "preprocess_s": 0.11382351289994404,
+  "network_s": 0.24480764130012175,
+  "postproc_s": 0.16782320769989384,
+  "total_s": 0.5264543618999596
+ },
+ "student_plain + enhanced": {
+  "preprocess_s": 0.11795184844995674,
+  "network_s": 0.24827303944985032,
+  "postproc_s": 0.17260576340031547,
+  "total_s": 0.5388306513001225
+ },
+ "single model + enhanced post-processing (own tuning)": {
+  "preprocess_s": 0.12351048035011444,
+  "network_s": 0.24288158564995682,
+  "postproc_s": 0.15127564139997957,
+  "total_s": 0.5176677074000509
+ },
+ "TTA x8 + enhanced (own tuning)": {
+  "preprocess_s": 0.11712442650004959,
+  "network_s": 1.2727415928498886,
+  "postproc_s": 0.08115875825014882,
+  "total_s": 1.4710247776000869
+ },
+ "3-seed ensemble + enhanced (own tuning)": {
+  "preprocess_s": 0.11328856304999135,
+  "network_s": 0.5493089899001007,
+  "postproc_s": 0.131667368349963,
+  "total_s": 0.794264921300055
+ },
+ "ensemble + TTA x8 + enhanced (own tuning)": {
+  "preprocess_s": 0.11308170990005237,
+  "network_s": 3.707793704349933,
+  "postproc_s": 0.14927522120010508,
+  "total_s": 3.9701506354500906
+ },
+ "structured25 + enhanced (own tuning)": {
+  "preprocess_s": 0.1121615070500411,
+  "network_s": 0.21809642444995916,
+  "postproc_s": 0.15144787439999163,
+  "total_s": 0.4817058058999919
+ },
+ "structured50 + enhanced (own tuning)": {
+  "preprocess_s": 0.111663834500132,
+  "network_s": 0.18425509809981122,
+  "postproc_s": 0.13881050700001651,
+  "total_s": 0.43472943959995974
+ },
+ "student_kd + enhanced (own tuning)": {
+  "preprocess_s": 0.11871678074990086,
+  "network_s": 0.22366770470002847,
+  "postproc_s": 0.08013370274989029,
+  "total_s": 0.4225181881998196
+ },
+ "student_plain + enhanced (own tuning)": {
+  "preprocess_s": 0.11172932224994839,
+  "network_s": 0.22426840345019627,
+  "postproc_s": 0.13737073044994758,
+  "total_s": 0.47336845615009226
+ }
+}

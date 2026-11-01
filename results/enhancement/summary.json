@@ -1,0 +1,31 @@
+{
+ "model": "C_final",
+ "seeds": [
+  0,
+  1,
+  2
+ ],
+ "tune_seed": 1,
+ "folds": 2,
+ "baseline_PQ": 0.3733423687075041,
+ "baseline_PQ_std": 0.0036455511485533,
+ "postprocessing_PQ": 0.4040835475509809,
+ "postprocessing_PQ_std": 0.0053870487351888,
+ "final_pipeline": "TTA x8 + enhanced",
+ "final_PQ": 0.41379583258257185,
+ "final_total_s": 1.4710247776000869,
+ "fast_pipeline": "student_plain + enhanced",
+ "fast_PQ": 0.4066081275196284,
+ "fast_total_s": 0.47336845615009226,
+ "final_params": {
+  "thr": 0.5,
+  "min_area": 0,
+  "join_r": 0,
+  "join_thr": null,
+  "clf": "trained",
+  "clf_thr": 0.5,
+  "min_mean": 0.0
+ },
+ "device": "Tesla T4",
+ "hours": 1.6954969019360013
+}

@@ -1,0 +1,193 @@
+{
+ "baseline (nb 02)": {
+  "0": {
+   "thr": 0.5,
+   "min_area": 50
+  },
+  "1": {
+   "thr": 0.5,
+   "min_area": 50
+  },
+  "all": {
+   "thr": 0.5,
+   "min_area": 50
+  }
+ },
+ "tuned threshold + min area": {
+  "0": {
+   "thr": 0.5,
+   "min_area": 300
+  },
+  "1": {
+   "thr": 0.7,
+   "min_area": 500
+  },
+  "all": {
+   "thr": 0.5,
+   "min_area": 300
+  }
+ },
+ "+ hysteresis": {
+  "0": {
+   "thr": 0.5,
+   "min_area": 300,
+   "lo": null,
+   "min_seed": 0
+  },
+  "1": {
+   "thr": 0.7,
+   "min_area": 500,
+   "lo": null,
+   "min_seed": 0
+  },
+  "all": {
+   "thr": 0.5,
+   "min_area": 300,
+   "lo": null,
+   "min_seed": 0
+  }
+ },
+ "+ join fragments": {
+  "0": {
+   "thr": 0.5,
+   "min_area": 300,
+   "lo": null,
+   "min_seed": 0,
+   "join_r": 4,
+   "join_thr": 0.2,
+   "spine_thr": null
+  },
+  "1": {
+   "thr": 0.7,
+   "min_area": 500,
+   "lo": null,
+   "min_seed": 0,
+   "join_r": 8,
+   "join_thr": 0.2,
+   "spine_thr": 0.3
+  },
+  "all": {
+   "thr": 0.5,
+   "min_area": 300,
+   "lo": null,
+   "min_seed": 0,
+   "join_r": 8,
+   "join_thr": 0.2,
+   "spine_thr": null
+  }
+ },
+ "+ split merges": {
+  "0": {
+   "thr": 0.5,
+   "min_area": 300,
+   "lo": null,
+   "min_seed": 0,
+   "join_r": 4,
+   "join_thr": 0.2,
+   "spine_thr": null,
+   "split": null
+  },
+  "1": {
+   "thr": 0.7,
+   "min_area": 500,
+   "lo": null,
+   "min_seed": 0,
+   "join_r": 8,
+   "join_thr": 0.2,
+   "spine_thr": 0.3,
+   "split": null
+  },
+  "all": {
+   "thr": 0.5,
+   "min_area": 300,
+   "lo": null,
+   "min_seed": 0,
+   "join_r": 8,
+   "join_thr": 0.2,
+   "spine_thr": null,
+   "split": null
+  }
+ },
+ "+ rule filter": {
+  "0": {
+   "thr": 0.5,
+   "min_area": 300,
+   "lo": null,
+   "min_seed": 0,
+   "join_r": 4,
+   "join_thr": 0.2,
+   "spine_thr": null,
+   "split": null,
+   "min_mean": 0.0,
+   "max_rdist": 0.95
+  },
+  "1": {
+   "thr": 0.7,
+   "min_area": 500,
+   "lo": null,
+   "min_seed": 0,
+   "join_r": 8,
+   "join_thr": 0.2,
+   "spine_thr": 0.3,
+   "split": null,
+   "min_mean": 0.0,
+   "max_rdist": null
+  },
+  "all": {
+   "thr": 0.5,
+   "min_area": 300,
+   "lo": null,
+   "min_seed": 0,
+   "join_r": 8,
+   "join_thr": 0.2,
+   "spine_thr": null,
+   "split": null,
+   "min_mean": 0.0,
+   "max_rdist": 0.95
+  }
+ },
+ "+ learned filter": {
+  "0": {
+   "thr": 0.5,
+   "min_area": 0,
+   "lo": null,
+   "min_seed": 0,
+   "join_r": 4,
+   "join_thr": 0.2,
+   "spine_thr": null,
+   "split": null,
+   "min_mean": 0.0,
+   "max_rdist": 0.95,
+   "clf": "trained",
+   "clf_thr": 0.5
+  },
+  "1": {
+   "thr": 0.7,
+   "min_area": 0,
+   "lo": null,
+   "min_seed": 0,
+   "join_r": 8,
+   "join_thr": 0.2,
+   "spine_thr": 0.3,
+   "split": null,
+   "min_mean": 0.0,
+   "max_rdist": null,
+   "clf": "trained",
+   "clf_thr": 0.5
+  },
+  "all": {
+   "thr": 0.5,
+   "min_area": 0,
+   "lo": null,
+   "min_seed": 0,
+   "join_r": 8,
+   "join_thr": 0.2,
+   "spine_thr": null,
+   "split": null,
+   "min_mean": 0.0,
+   "max_rdist": 0.95,
+   "clf": "trained",
+   "clf_thr": 0.4
+  }
+ }
+}
